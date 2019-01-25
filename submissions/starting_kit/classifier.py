@@ -12,11 +12,11 @@ class Classifier(BaseEstimator):
 
         self.model = lgb.LGBMClassifier(
             boosting_type='gbdt',
-            num_leaves=31,
+            num_leaves=80,
             reg_alpha=0.0,
             reg_lambda=1,
-            max_depth=-1,
-            n_estimators=1500,
+            max_depth=50,
+            n_estimators=15,
             objective='binary',
             subsample=0.7,
             colsample_bytree=0.7,
@@ -24,7 +24,8 @@ class Classifier(BaseEstimator):
             learning_rate=0.05,
             min_child_weight=50,
             random_state=2018,
-            n_jobs=-1)
+            n_jobs=3,
+            class_weight='balanced')
 
     def fit(self, X, y):
         self.model.fit(X, y)

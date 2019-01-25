@@ -67,6 +67,7 @@ def _read_data(path, f_name):
     ufea = pd.read_csv(os.path.join(path, 'data', 'userFeature.csv'))
     X_df = pd.merge(X_df, ufea, on='uid', how='inner')
     del ufea
+    X_df.drop(columns=['aid', 'uid'], inplace=True)
     return X_df, y_array
 
 
