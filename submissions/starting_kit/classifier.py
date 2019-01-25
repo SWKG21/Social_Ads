@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 import lightgbm as lgb
-
+import numpy as np
 
 class Classifier(BaseEstimator):
     def __init__(self):
@@ -16,7 +16,7 @@ class Classifier(BaseEstimator):
             reg_alpha=0.0,
             reg_lambda=1,
             max_depth=50,
-            n_estimators=15,
+            n_estimators=150,
             objective='binary',
             subsample=0.7,
             colsample_bytree=0.7,
