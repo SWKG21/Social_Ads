@@ -80,6 +80,7 @@ def filter_transform_userFeature(i):
 
 
 def get_userFeature():
+    data = pd.read_csv(tmp_path+"data.csv")
     ufeas = pd.read_csv(input_path+"userFeature.data", header=None, chunksize=500000)
     i = 0
     for ufea in ufeas:    # for each chunk
@@ -91,12 +92,13 @@ def get_userFeature():
                 els = item.split()
                 fea_dict[els[0]] = ' '.join(els[1:])
             fea_list.append(fea_dict)
-        pd.DataFrame(fea_list).to_csv(tmp_path+"userFeature_"+str(i+1)+".csv", index=False)
+        df_ufea = pd.DataFrame(fea_list)
+        df_ufea['uid'] = pd.to_numeric(df_ufea['uid'])
+        pd.merge(data, df_ufea, on='uid', how='inner').drop(columns=['aid', 'label']).to_csv(tmp_path+"userFeature_"+str(i+1)+".csv", index=False)
         i = i + 1
     userFea = pd.concat([pd.read_csv(tmp_path+"userFeature_"+str(k+1)+".csv") for k in range(i)])
     userFea.drop_duplicates(inplace=True)
     userFea.to_csv(output_path+"userFeature.csv", index=False)
-
 
 
 if __name__ == "__main__":
