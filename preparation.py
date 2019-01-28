@@ -11,6 +11,7 @@ cols = ['age', 'gender', 'marriageStatus', 'education', 'consumptionAbility', 'L
         'interest1', 'interest2', 'interest3', 'interest4', 'interest5', 'kw1', 'kw2', 'kw3', 
         'topic1', 'topic2', 'topic3', 'appIdInstall', 'appIdAction', 'ct', 'os', 'carrier', 'house']
 
+
 def sample(frac=0.1):
     train = pd.read_csv(input_path+"train.csv")
     data = train.sample(frac=frac)
@@ -20,6 +21,19 @@ def sample(frac=0.1):
     train.to_csv(output_path+"train.csv", index=False)
     test.to_csv(output_path+"test.csv", index=False)
 
+
+def balanced_sample(frac=1):
+    train = pd.read_csv(input_path+"train.csv")
+    pos_train = train[train['label']==1]
+    neg_train = train[train['label']==-1]
+    data = pd.concat([pos_train, neg_train.sample(frac=0.05)]).sample(frac=frac)
+    data['label'] = data['label'].replace(-1, 0)
+    data.to_csv(tmp_path+"data.csv", index=False)
+    train, test = train_test_split(data, test_size=0.3)
+    train.to_csv(output_path+"train.csv", index=False)
+    test.to_csv(output_path+"test.csv", index=False)
+
+
 def split_userFeature():
     ufeas = pd.read_csv(input_path+"userFeature.data", header=None, chunksize=3000000)
     for i, ufea in enumerate(ufeas):
@@ -28,6 +42,7 @@ def split_userFeature():
         ufea['fea'] = ufea[0].map(lambda x: "age " + x[1])
         ufea.drop(columns=[0], inplace=True)
         ufea.to_csv(tmp_path+"userFeature_"+str(i+1)+".csv", index=False)
+
 
 def filter_transform_userFeature(i):
     data = pd.read_csv(tmp_path+"data.csv")
@@ -64,21 +79,43 @@ def filter_transform_userFeature(i):
     ufeas.to_csv(tmp_path+"trans_filtered_userFeature_"+str(i+1)+".csv", index=False)
 
 
+def get_userFeature():
+    ufeas = pd.read_csv(input_path+"userFeature.data", header=None, chunksize=500000)
+    i = 0
+    for ufea in ufeas:    # for each chunk
+        fea_list = []
+        ufea[0] = ufea[0].map(lambda x: x.strip().split('|'))
+        for j in range(ufea.shape[0]):  # for each line in the chunk
+            fea_dict = {}
+            for item in ufea.iloc[j, 0]:    # for each feature in the line
+                els = item.split()
+                fea_dict[els[0]] = ' '.join(els[1:])
+            fea_list.append(fea_dict)
+        pd.DataFrame(fea_list).to_csv(tmp_path+"userFeature_"+str(i+1)+".csv", index=False)
+        i = i + 1
+    userFea = pd.concat([pd.read_csv(tmp_path+"userFeature_"+str(k+1)+".csv") for k in range(i)])
+    userFea.drop_duplicates(inplace=True)
+    userFea.to_csv(output_path+"userFeature.csv", index=False)
+
+
+
 if __name__ == "__main__":
-    sample(0.15)
-    print ("Data subsampling finished !!!")
-    split_userFeature()
-    pool = mp.Pool(processes=4)
-    for i in range(4):
-        pool.apply_async(filter_transform_userFeature, (i,))
-    pool.close()
-    pool.join()
-    print ("Multiprocessing user feature filtration & transformation finished !!!")
-    cols.insert(0, 'uid')
-    ufeas = pd.DataFrame(columns=cols)
-    for i in range(4):
-        tmp = pd.read_csv(tmp_path+"trans_filtered_userFeature_"+str(i+1)+".csv")
-        ufeas = pd.concat([ufeas, tmp])
-    ufeas.drop_duplicates(inplace=True)
-    ufeas.to_csv(output_path+"userFeature.csv", index=False)
-    print ("User feature combination finished !!!")
+    # sample(0.15)
+    # print ("Data subsampling finished !!!")
+    # split_userFeature()
+    # pool = mp.Pool(processes=4)
+    # for i in range(4):
+    #     pool.apply_async(filter_transform_userFeature, (i,))
+    # pool.close()
+    # pool.join()
+    # print ("Multiprocessing user feature filtration & transformation finished !!!")
+    # cols.insert(0, 'uid')
+    # ufeas = pd.DataFrame(columns=cols)
+    # for i in range(4):
+    #     tmp = pd.read_csv(tmp_path+"trans_filtered_userFeature_"+str(i+1)+".csv")
+    #     ufeas = pd.concat([ufeas, tmp])
+    # ufeas.drop_duplicates(inplace=True)
+    # ufeas.to_csv(output_path+"userFeature.csv", index=False)
+    # print ("User feature combination finished !!!")
+    balanced_sample()
+    get_userFeature()
