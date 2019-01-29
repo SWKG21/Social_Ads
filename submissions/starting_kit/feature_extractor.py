@@ -45,7 +45,7 @@ def _transform(X_df):
     data_new = labelEncoder(data_new, data_new, one_hot_feature)  # normalize features
 
     X_sparse = OneHot(data_new, X_df_new, one_hot_feature)
-    X_sparse = Vectorize(data_new, X_df_new, vector_feature, X_sparse)
+    #X_sparse = Vectorize(data_new, X_df_new, vector_feature, X_sparse)
 
     return X_sparse.tocsr()
 
