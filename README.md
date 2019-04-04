@@ -4,6 +4,8 @@ _Authors: Bolong ZHANG, Shangyuan ZHANG, Wang SUN, Wenzhuo LIU_
 
 This is a project for a DataCamp of Master Data Sciences at École Polytechnique. It is based on a collaborative platform called [RAMP](https://www.ramp.studio/). Projects on this platform are like [this](https://www.ramp.studio/problems).
 
+#### Introduction
+
 Our project is based on the social ads challenge of Tencent.
 
 Social relationship-based advertising (i.e., social advertising) has become one of the fastest growing categories of advertising in the Internet advertising industry.
