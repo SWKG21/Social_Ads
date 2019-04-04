@@ -2,7 +2,7 @@
 
 _Authors: Bolong ZHANG, Shangyuan ZHANG, Wang SUN, Wenzhuo LIU_
 
-This is a project for a DataCamp of Master Data Sciences at École Polytechnique. It is based on a collaborative platform called [RAMP](https://www.ramp.studio/). Projects on this platform are like [this](https://www.ramp.studio/problems).
+This is a project for a DataCamp of Master Data Sciences at École Polytechnique. It is based on a collaborative platform called [RAMP](https://www.ramp.studio/). Projects on this platform are like [this](https://www.ramp.studio/problems). To start this project on RAMP, first set up RAMP platform and then refer to [social_ads_starting_kit notebook](social_ads_starting_kit.ipynb) for more project information.
 
 ### Introduction
 
