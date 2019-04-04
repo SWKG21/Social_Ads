@@ -2,13 +2,17 @@
 
 _Authors: Bolong ZHANG, Shangyuan ZHANG, Wang SUN, Wenzhuo LIU_
 
+This is a project for a DataCamp of Master Data Sciences at École Polytechnique. It is based on a collaborative platform called RAMP[https://www.ramp.studio/]. Projects on this platform are like this[https://www.ramp.studio/problems].
+
+Our project is based on the social ads challenge of Tencent.
+
 Social relationship-based advertising (i.e., social advertising) has become one of the fastest growing categories of advertising in the Internet advertising industry.
 
 Tencent Social Ads is the advertising arm of Chinese internet giant Tencent. Through the platform, it’s possible for clients to target users on Wechat (also known as Weixin), QQ and QZone, and other Tencent platforms. Advertisers claim to reach around 900 million users through Tencent in 2017.
 
 This challenge comes from a real advertising product in Tencent's social advertising business - Lookalike. The purpose of this product is to identify other users who are similar to the target users from a large number of people based on the target data provided by the advertiser. In the actual case, Lookalike can help advertisers find potential consumers similar to existing consumers based on the existing data of advertisers, which finally helps to explore new customers and expand their business.
 
-#### Set up
+#### Set up RAMP platform
 
 Open a terminal and
 
